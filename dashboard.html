@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Focus Games — Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Focus Games</div>
+    <div>
+      <span id="welcome-text" class="toggle-row" style="display:inline; margin-right:14px;"></span>
+      <button class="btn-secondary btn-small" id="logout-btn">Log out</button>
+    </div>
+  </div>
+
+  <div class="container wide">
+    <div class="card">
+      <h1>Your training</h1>
+      <p class="subtitle">Every round is timed and must be finished in one sitting — leave or refresh and it resets.</p>
+
+      <div class="stats-row">
+        <div class="stat-tile">
+          <div class="value" id="stat-total">0</div>
+          <div class="label">Rounds completed</div>
+        </div>
+        <div class="stat-tile">
+          <div class="value" id="stat-best-time">—</div>
+          <div class="label">Best time</div>
+        </div>
+        <div class="stat-tile">
+          <div class="value" id="stat-best-moves">—</div>
+          <div class="label">Fewest moves</div>
+        </div>
+      </div>
+
+      <div class="play-banner">
+        <div>
+          <h2 style="margin-bottom:2px;">🧠 Memory Match</h2>
+          <div class="desc">Flip cards, find every pair, beat your best time.</div>
+        </div>
+        <button class="btn-primary" style="width:auto;" id="play-btn">Play now</button>
+      </div>
+
+      <h2>History</h2>
+      <p class="subtitle" style="margin-top:-10px;">Add a quick reflection on any round — what helped you focus, what pulled your attention away. It's yours to edit or clear any time.</p>
+      <div id="history-wrap">
+        <div class="spinner-text">Loading your history…</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
