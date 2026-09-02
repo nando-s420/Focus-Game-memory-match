@@ -72,10 +72,11 @@ function renderHistory(attempts) {
       (a) => `
     <tr data-id="${a.id}">
       <td>Memory Match</td>
+      <td style="text-transform:capitalize;">${a.difficulty || "hard"}</td>
       <td>${formatTime(a.time_seconds)}</td>
       <td>${a.moves}</td>
       <td>${formatDate(a.completed_at)}</td>
-      <td><input type="text" class="note-input" value="${(a.note || "").replace(/"/g, "&quot;")}" placeholder="Add a note…" /></td>
+      <td><input type="text" class="note-input" value="${(a.note || "").replace(/"/g, "&quot;")}" placeholder="How did that round feel?" /></td>
       <td class="actions-cell">
         <button class="btn-secondary btn-small save-note-btn">Save</button>
         <button class="btn-danger delete-btn">Delete</button>
@@ -89,10 +90,11 @@ function renderHistory(attempts) {
       <thead>
         <tr>
           <th>Game</th>
+          <th>Difficulty</th>
           <th>Time</th>
           <th>Moves</th>
           <th>Completed</th>
-          <th>Note</th>
+          <th>Reflection</th>
           <th></th>
         </tr>
       </thead>

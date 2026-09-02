@@ -282,6 +282,61 @@ table.history input[type="text"] {
   white-space: nowrap;
 }
 
+.hidden {
+  display: none !important;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-2);
+  background: rgba(34, 211, 165, 0.14);
+  border: 1px solid rgba(34, 211, 165, 0.3);
+  border-radius: 999px;
+  padding: 3px 10px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.difficulty-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.difficulty-card {
+  background: var(--bg-soft);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--text);
+  transition: transform 0.1s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.difficulty-card:hover {
+  border-color: var(--accent);
+  background: rgba(124, 92, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.difficulty-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.difficulty-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
 /* Game page */
 .game-hud {
   display: flex;

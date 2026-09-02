@@ -1,4 +1,15 @@
-const SYMBOLS = ["🍎", "🚀", "🎧", "🐳", "🌵", "⚡", "🎲", "🍄"]; // 8 pairs = 16 tiles
+const SYMBOL_POOL = ["🍎", "🚀", "🎧", "🐳", "🌵", "⚡", "🎲", "🍄"]; // up to 8 pairs
+
+const DIFFICULTIES = {
+  easy: { pairs: 6, cols: 3, label: "Easy" },
+  hard: { pairs: 8, cols: 4, label: "Hard" },
+};
+
+const difficultySelect = document.getElementById("difficulty-select");
+const playArea = document.getElementById("play-area");
+const pickEasyBtn = document.getElementById("pick-easy");
+const pickHardBtn = document.getElementById("pick-hard");
+const difficultyBadge = document.getElementById("difficulty-badge");
 
 const grid = document.getElementById("grid");
 const hudTime = document.getElementById("hud-time");
@@ -12,6 +23,7 @@ const againBtn = document.getElementById("again-btn");
 const dashboardBtn = document.getElementById("dashboard-btn");
 const quitBtn = document.getElementById("quit-btn");
 
+let difficulty = null; // "easy" | "hard" — locked in once a round starts
 let tiles = [];
 let flipped = [];
 let matchedCount = 0;
@@ -20,7 +32,6 @@ let seconds = 0;
 let timerHandle = null;
 let timerStarted = false;
 let locked = false; // prevents clicks while checking a pair
-let gameSaved = false;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -50,9 +61,25 @@ function stopTimer() {
   clearInterval(timerHandle);
 }
 
+// Step 1 of the flow: commit to a difficulty. This is a real decision point —
+// once chosen it can't be changed mid-round, and it determines the pair count
+// the round must be finished against.
+function chooseDifficulty(level) {
+  difficulty = level;
+  const cfg = DIFFICULTIES[level];
+  difficultyBadge.textContent = cfg.label;
+  grid.style.gridTemplateColumns = `repeat(${cfg.cols}, 1fr)`;
+  difficultySelect.classList.add("hidden");
+  playArea.classList.remove("hidden");
+  buildBoard();
+}
+
 function buildBoard() {
+  const cfg = DIFFICULTIES[difficulty];
+  const symbols = SYMBOL_POOL.slice(0, cfg.pairs);
+
   // Reset all state — this is what makes every visit/replay a fresh round.
-  tiles = shuffle([...SYMBOLS, ...SYMBOLS]).map((symbol, i) => ({
+  tiles = shuffle([...symbols, ...symbols]).map((symbol, i) => ({
     id: i,
     symbol,
     flipped: false,
@@ -64,12 +91,11 @@ function buildBoard() {
   seconds = 0;
   timerStarted = false;
   locked = false;
-  gameSaved = false;
   clearInterval(timerHandle);
 
   hudTime.textContent = "0:00";
   hudMoves.textContent = "0";
-  hudPairs.textContent = `0/${SYMBOLS.length}`;
+  hudPairs.textContent = `0/${cfg.pairs}`;
   winOverlay.classList.remove("show");
 
   renderBoard();
@@ -106,11 +132,12 @@ function onTileClick(id) {
       a.matched = true;
       b.matched = true;
       matchedCount += 1;
-      hudPairs.textContent = `${matchedCount}/${SYMBOLS.length}`;
+      const totalPairs = DIFFICULTIES[difficulty].pairs;
+      hudPairs.textContent = `${matchedCount}/${totalPairs}`;
       flipped = [];
       locked = false;
       renderBoard();
-      if (matchedCount === SYMBOLS.length) {
+      if (matchedCount === totalPairs) {
         onWin();
       }
     } else {
@@ -141,16 +168,21 @@ async function onWin() {
   const { error } = await supabaseClient.from("attempts").insert({
     user_id: data.session.user.id,
     game_type: "memory",
+    difficulty,
     moves,
     time_seconds: seconds,
     completed_at: new Date().toISOString(),
   });
 
-  gameSaved = !error;
   saveStatus.textContent = error ? `Couldn't save: ${error.message}` : "Saved to your history ✓";
 }
 
-againBtn.addEventListener("click", buildBoard);
+pickEasyBtn.addEventListener("click", () => chooseDifficulty("easy"));
+pickHardBtn.addEventListener("click", () => chooseDifficulty("hard"));
+againBtn.addEventListener("click", () => {
+  // Play again keeps the same difficulty and returns straight to a fresh board.
+  buildBoard();
+});
 dashboardBtn.addEventListener("click", () => (window.location.href = "dashboard.html"));
 quitBtn.addEventListener("click", () => (window.location.href = "dashboard.html"));
 
@@ -160,5 +192,5 @@ quitBtn.addEventListener("click", () => (window.location.href = "dashboard.html"
     window.location.href = "index.html";
     return;
   }
-  buildBoard();
+  // Wait at the difficulty-select screen — buildBoard() only runs once a choice is made.
 })();
