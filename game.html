@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Focus Games — Memory Match</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Focus Games</div>
+    <button class="btn-secondary btn-small" id="quit-btn">Quit to dashboard</button>
+  </div>
+
+  <div class="container wide">
+    <div class="card">
+      <div class="game-hud">
+        <h2 style="margin:0;">🧠 Memory Match</h2>
+        <div class="hud-stats">
+          <div class="hud-stat">
+            <div class="value" id="hud-time">0:00</div>
+            <div class="label">Time</div>
+          </div>
+          <div class="hud-stat">
+            <div class="value" id="hud-moves">0</div>
+            <div class="label">Moves</div>
+          </div>
+          <div class="hud-stat">
+            <div class="value" id="hud-pairs">0/8</div>
+            <div class="label">Pairs</div>
+          </div>
+        </div>
+      </div>
+      <p class="warning-note">Finish in one sitting — leaving or refreshing this page resets the round.</p>
+
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+
+  <div class="win-overlay" id="win-overlay">
+    <div class="win-card">
+      <div class="big-emoji">🎉</div>
+      <h2>Round complete!</h2>
+      <div class="result-row">
+        <div class="hud-stat">
+          <div class="value" id="final-time">0:00</div>
+          <div class="label">Time</div>
+        </div>
+        <div class="hud-stat">
+          <div class="value" id="final-moves">0</div>
+          <div class="label">Moves</div>
+        </div>
+      </div>
+      <p class="subtitle" id="save-status">Saving your result…</p>
+      <button class="btn-primary" id="again-btn" style="margin-bottom:10px;">Play again</button>
+      <button class="btn-secondary" id="dashboard-btn" style="width:100%;">Back to dashboard</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
