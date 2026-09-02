@@ -4,7 +4,7 @@ A tiny web app that helps people train their attention span with a timed memory-
 game. Every round must be finished in one sitting — if you leave or refresh, it resets,
 which is the whole point (no cheating your attention span).
 
-**Live app:** _(add your Vercel URL here after deploying)_
+**Live app:** _(focus-game-memory-match.vercel.app/dashboard.html)_
 **Test credentials:** _(add an email/password here after you create one — see Step 5)_
 
 ---
